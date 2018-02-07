@@ -190,8 +190,12 @@
   "dependencies": {
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",
+    "electron-json-storage": "^4.0.2",
+    "es6-promisify-all": "^0.1.0",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
+    "mz": "^2.7.0",
+    "promise-map-limit": "^1.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0-beta.13",
@@ -201,7 +205,9 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "source-map-support": "^0.5.3"
+    "robinhood": "^1.1.2",
+    "source-map-support": "^0.5.3",
+    "yahoo-stocks": "^2.0.1"
   },
   "devEngines": {
     "node": ">=7.x",

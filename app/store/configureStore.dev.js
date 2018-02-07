@@ -59,6 +59,10 @@ const configureStore = (initialState?: counterStateType) => {
       store.replaceReducer(require('../reducers'))); // eslint-disable-line global-require
   }
 
+  store.subscribe(() => {
+    console.log(arguments, 'sub', store.getState());
+  });
+
   return store;
 };
 
