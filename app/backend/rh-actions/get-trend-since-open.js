@@ -5,7 +5,7 @@ const mapLimit = require('promise-map-limit');
 
 // utils
 const getTrend = require('../utils/get-trend');
-
+const chunkApi = require('../utils/chunk-api');
 
 
 const splitIntoChunks = (array, size) => {
@@ -50,26 +50,49 @@ const getTrendSinceOpen = {
   },
   multiple: async (Robinhood, stocks) => {
 
+    console.log('multiple')
+    let quotes = await chunkApi(
+      stocks,
+      async (tickerStr) => {
+        console.log('ti', tickerStr);
+        const { results } = await Robinhood.url(`https://api.robinhood.com/quotes/?symbols=${tickerStr}`);
+        return results;
+      },
+      1630
+    );
 
-    let withQuotes = await mapLimit(splitIntoChunks(stocks, 1630), 1, async collection => {
-      const { results } = await Robinhood.url(`https://api.robinhood.com/quotes/?symbols=${collection.join(',')}`);
-      console.log(results);
-      return results.map((quoteData, i) => {
-        if (!quoteData) {
-          console.log('ticker no good', collection[i]);
-        }
-        quoteData = quoteData || {};
-        return {
-          ticker: collection[i],
-          quote_data: quoteData,
-          last_trade_price: Number(quoteData.last_trade_price),
-          previous_close: Number(quoteData.previous_close),
-          trend_since_prev_close: getTrend(quoteData.last_trade_price, quoteData.previous_close)
-        };
-      });
+    let withQuotes = stocks.map((ticker, i) => {
+      let quoteData = quotes[i] || {};
+      return {
+        ticker,
+        quote_data: quoteData,
+        last_trade_price: Number(quoteData.last_trade_price),
+        previous_close: Number(quoteData.previous_close),
+        trend_since_prev_close: getTrend(quoteData.last_trade_price, quoteData.previous_close)
+      };
     });
 
-    withQuotes = flatten(withQuotes);
+    console.log(quotes, quotes.length, stocks.length);
+
+    // let withQuotes = await mapLimit(splitIntoChunks(stocks, 1630), 1, async collection => {
+    //   const { results } = await Robinhood.url(`https://api.robinhood.com/quotes/?symbols=${collection.join(',')}`);
+    //   console.log(results);
+    //   return results.map((quoteData, i) => {
+    //     if (!quoteData) {
+    //       console.log('ticker no good', collection[i]);
+    //     }
+    //     quoteData = quoteData || {};
+    //     return {
+    //       ticker: collection[i],
+    //       quote_data: quoteData,
+    //       last_trade_price: Number(quoteData.last_trade_price),
+    //       previous_close: Number(quoteData.previous_close),
+    //       trend_since_prev_close: getTrend(quoteData.last_trade_price, quoteData.previous_close)
+    //     };
+    //   });
+    // });
+    //
+    // withQuotes = flatten(withQuotes);
 
     console.log(withQuotes, 'withQuotes');
 

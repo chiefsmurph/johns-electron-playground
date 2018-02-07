@@ -1,6 +1,7 @@
 const getTrendAndSave = require('../app-actions/get-trend-and-save');
 const login = require('../rh-actions/login');
 const getTrend = require('../utils/get-trend');
+const getMultipleHistoricals = require('../app-actions/get-multiple-historicals');
 
 const mapLimit = require('promise-map-limit');
 
@@ -21,35 +22,16 @@ module.exports = async Robinhood => {
         Number(stock.quote_data.last_trade_price) > .2;
     });
 
-  let curIndex = 0;
-  const withHistoricals = await mapLimit(cheapBuys, 2, async buy => {
+  let allHistoricals = await getMultipleHistoricals(
+    Robinhood,
+    cheapBuys.map(buy => buy.ticker)
+  );
 
-    if (curIndex % Math.floor(cheapBuys.length / 10) === 0) {
-      console.log('historical', curIndex, 'of', cheapBuys.length);
-    }
-    curIndex++;
-
-    let historicals = await getHistorical(buy.ticker);
-    let prevClose;
-    historicals = historicals.map(hist => {
-      ['open_price', 'close_price', 'high_price', 'low_price'].forEach(key => {
-        hist[key] = Number(hist[key]);
-      });
-      if (prevClose) {
-        hist.trend = getTrend(hist.close_price, prevClose);
-      }
-      prevClose = hist.close_price;
-      return hist;
-    });
-
-    return {
-      // ticker: buy.ticker,
-      ...buy,
-      historicals,
-    };
-
-  });
-
+  const withHistoricals = cheapBuys.map((buy, i) => ({
+    ...buy,
+    historicals: allHistoricals[i]
+  }));
+  
   const ofInterest = withHistoricals
     .filter(({ historicals }) => historicals.length)
     .map(buy => {
