@@ -19,9 +19,18 @@ export default class Plays extends Component {
           </Link>
         </div>
         isloggedin: {JSON.stringify(this.props.isLoggedIn)}
-        <NewPlayForm robinhood={this.props.robinhood} onNewPlay={this.props.playActions.registerPlay}/>
+        <NewPlayForm
+          robinhood={this.props.robinhood}
+          onNewPlay={this.props.playActions.registerPlay}
+        />
         <div className={styles.btnGroup}>
-          <button className={styles.btn} onClick={() => this.props.clearPlays()} data-tclass="btn">clearPlays</button>
+          <button
+            className={styles.btn}
+            onClick={() => this.props.clearPlays()}
+            data-tclass="btn"
+          >
+            clearPlays
+          </button>
         </div>
         <div className={`counter ${styles.counter}`} data-tid="counter">
           <PlayTable activePlays={this.props.activePlays} />

@@ -41,6 +41,7 @@ export default class Home extends Component {
           <h2>Home</h2>
           <Link to="/plays">to Counter</Link>
           <button onClick={() => this.getFirstGreens()}>get first greens</button>
+          
         </div>
         <pre>{JSON.stringify(this.state.outputText, null, 2)}</pre>
       </div>

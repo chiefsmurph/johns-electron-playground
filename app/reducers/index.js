@@ -7,9 +7,9 @@ import robinhood from './robinhood';
 
 const rootReducer = combineReducers({
   // counter,
-  router,
   plays,
-  robinhood
+  robinhood,
+  router,
 });
 
 export default rootReducer;

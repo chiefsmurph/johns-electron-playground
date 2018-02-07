@@ -5,9 +5,14 @@ import { connect } from 'react-redux';
 import * as PlayActions from '../actions/plays';
 import * as RobinhoodActions from '../actions/robinhood';
 
-type Props = {
-  children: React.Node
-};
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.robinhood.isLoggedIn,
+    robinhood: state.robinhood.instance,
+    activePlays: state.plays.active,
+    router: state.router
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -16,8 +21,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(() => ({}), mapDispatchToProps)(class App extends React.Component {
-  props: Props;
+export default connect(mapStateToProps, mapDispatchToProps)(class App extends React.Component {
   async componentDidMount() {
     this.props.robinhoodActions.loginRh();
     this.props.playActions.init();
@@ -25,6 +29,7 @@ export default connect(() => ({}), mapDispatchToProps)(class App extends React.C
   render() {
     return (
       <div>
+        <pre>{JSON.stringify(this.props.router, null, 2)}</pre>
         {this.props.children}
       </div>
     );
