@@ -26,14 +26,14 @@ export function loginFail(error) {
 }
 
 export function loginRh() {
-  return async (dispatch) => {
+  return (dispatch) => {
 
     return new Promise(async (resolve) => {
-
+      console.log('ROBINHOOD')
       const Robinhood = await rhLogin();
       dispatch(loginSucess(Robinhood));
       resolve();
-      
+
     });
 
   }

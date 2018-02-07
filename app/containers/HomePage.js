@@ -1,15 +1,24 @@
-// @flow
 import React, { Component } from 'react';
 import Home from '../components/Home';
 
-type Props = {};
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Plays from '../components/Plays';
+import * as PlayActions from '../actions/plays';
+import * as RobinhoodActions from '../actions/robinhood';
 
-export default class HomePage extends Component<Props> {
-  props: Props;
-
-  render() {
-    return (
-      <Home />
-    );
-  }
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.robinhood.isLoggedIn,
+    robinhood: state.robinhood.instance,
+    activePlays: state.plays.active
+  };
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    robinhoodActions: bindActionCreators(RobinhoodActions, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

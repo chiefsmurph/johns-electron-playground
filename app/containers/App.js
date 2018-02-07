@@ -20,7 +20,7 @@ export default connect(() => ({}), mapDispatchToProps)(class App extends React.C
   props: Props;
   async componentDidMount() {
     this.props.robinhoodActions.loginRh();
-    this.props.playActions.init();
+    // this.props.playActions.init();
   }
   render() {
     return (

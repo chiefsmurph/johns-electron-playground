@@ -65,7 +65,7 @@ module.exports = async Robinhood => {
       let mostRecentTrend;
       if (!todayInHistoricals) {
         // daytime
-        mostRecentTrend = buy.trend_since_open;
+        mostRecentTrend = buy.trend_since_prev_close;
       } else {
         // evening
         mostRecentTrend = historicals.shift().trend;

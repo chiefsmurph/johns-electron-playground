@@ -14,11 +14,7 @@ const pmJsonStorage = require('../utils/pm-json-storage');
 
 
 
-type Props = {};
-
-export default class Home extends Component<Props> {
-  props: Props;
-
+export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -28,12 +24,11 @@ export default class Home extends Component<Props> {
     // await pmJsonStorage.clear();
   }
 
-  async login() {
-    console.log('from the login');
-    this.Robinhood = await login();
+  async getFirstGreens() {
+    console.log('get first greens');
     try {
       this.setState({
-        outputText: await findFirstGreen(this.Robinhood)
+        outputText: await findFirstGreen(this.props.robinhood)
       });
     } catch (e) {
       console.log(e);
@@ -45,7 +40,7 @@ export default class Home extends Component<Props> {
         <div className={styles.container} data-tid="container">
           <h2>Home</h2>
           <Link to="/plays">to Counter</Link>
-          <button onClick={() => { console.log('clicked'); this.login() }}>click me</button>
+          <button onClick={() => this.getFirstGreens()}>get first greens</button>
         </div>
         <pre>{JSON.stringify(this.state.outputText, null, 2)}</pre>
       </div>
