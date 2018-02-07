@@ -57,7 +57,7 @@ export default class NewPlayForm extends Component {
   }
   render() {
     return (
-      <form>
+      <form onSubmit={e => e.preventDefault()}>
         <table>
           <tbody>
             <tr>

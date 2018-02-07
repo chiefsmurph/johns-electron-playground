@@ -31,7 +31,9 @@ module.exports = async Robinhood => {
     ...buy,
     historicals: allHistoricals[i]
   }));
-  
+
+  console.log(withHistoricals, 'withhist')
+
   const ofInterest = withHistoricals
     .filter(({ historicals }) => historicals.length)
     .map(buy => {
@@ -42,8 +44,11 @@ module.exports = async Robinhood => {
       const mostRecentHistDate = new Date(historicals[0].begins_at);
       mostRecentHistDate.setDate(mostRecentHistDate.getDate() + 1);
       const todaysDate = new Date();
+      if (todaysDate.getHours() < 6) {
+        todaysDate.setDate(todaysDate.getDate() - 1);
+      }
       const todayInHistoricals = mostRecentHistDate.getDate() === todaysDate.getDate();
-
+      console.log(todayInHistoricals, 'today in')
       let mostRecentTrend;
       if (!todayInHistoricals) {
         // daytime
@@ -84,7 +89,7 @@ module.exports = async Robinhood => {
         points
       };
     })
-    .filter(buy => buy.daysDownCount > 0 && Math.abs(buy.percDown) > buy.mostRecentTrend)
+    // .filter(buy => buy.daysDownCount > 0 && Math.abs(buy.percDown) > buy.mostRecentTrend)
     .sort((a, b) => b.points - a.points);
 
   console.log(JSON.stringify(ofInterest, null, 2));
