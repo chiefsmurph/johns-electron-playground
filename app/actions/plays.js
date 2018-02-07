@@ -20,7 +20,7 @@ export function init() {
   return async (dispatch, getState) => {
     const plays = await pmJsonStorage.get('plays', getState().plays);
     console.log('plays', plays);
-    if (plays) {
+    if (plays && plays.active) {
       dispatch(initPlays(plays));
     }
   };

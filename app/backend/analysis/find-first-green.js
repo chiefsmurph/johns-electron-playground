@@ -63,7 +63,7 @@ module.exports = async Robinhood => {
         mostRecentTrend
       };
     })
-    .filter(({mostRecentTrend}) => mostRecentTrend > 3)
+    .filter(({mostRecentTrend}) => mostRecentTrend > 1 && mostRecentTrend < 6)
     .map(buy => {
       let daysDown = [];
       buy.historicals.some(hist => {
@@ -72,8 +72,8 @@ module.exports = async Robinhood => {
         return !wentUp;
       });
       delete buy.historicals;
-      delete buy.fundamentals;
-      delete buy.quote_data;
+      // delete buy.fundamentals;
+      // delete buy.quote_data;
       const daysDownCount = daysDown.length - 1;
       if (daysDownCount) {
         try {
@@ -89,7 +89,7 @@ module.exports = async Robinhood => {
         points
       };
     })
-    // .filter(buy => buy.daysDownCount > 0 && Math.abs(buy.percDown) > buy.mostRecentTrend)
+    .filter(buy => buy.daysDownCount > 0 && Math.abs(buy.percDown) > buy.mostRecentTrend)
     .sort((a, b) => b.points - a.points);
 
   console.log(JSON.stringify(ofInterest, null, 2));
