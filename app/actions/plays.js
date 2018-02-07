@@ -1,5 +1,5 @@
 // @flow
-
+import detailedNonZero from '../backend/app-actions/detailed-non-zero';
 import pmJsonStorage from '../utils/pm-json-storage';
 
 export const NEW_PLAY = 'NEW_PLAY';
@@ -18,7 +18,7 @@ export function registerPlay(payload) {
 
 export function init() {
   return async (dispatch, getState) => {
-    const plays = await pmJsonStorage.get('plays', getState().plays);
+    const plays = await pmJsonStorage.get('plays');
     console.log('plays', plays);
     if (plays && plays.active) {
       dispatch(initPlays(plays));

@@ -23,8 +23,8 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(class App extends React.Component {
   async componentDidMount() {
-    this.props.robinhoodActions.loginRh();
-    this.props.playActions.init();
+    this.props.robinhoodActions.loginRh()
+      .then(() => this.props.playActions.init());
   }
   render() {
     return (

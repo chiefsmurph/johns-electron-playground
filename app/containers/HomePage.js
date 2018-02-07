@@ -9,6 +9,7 @@ import * as RobinhoodActions from '../actions/robinhood';
 
 function mapStateToProps(state) {
   return {
+    currentPositions: state.robinhood.currentPositions,
     isLoggedIn: state.robinhood.isLoggedIn,
     robinhood: state.robinhood.instance,
     activePlays: state.plays.active,

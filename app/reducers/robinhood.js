@@ -1,9 +1,10 @@
 // @flow
-import { LOGIN, LOGIN_SUCCESS, LOGIN_FAIL } from '../actions/robinhood';
+import { LOGIN, LOGIN_SUCCESS, LOGIN_FAIL, SET_CURRENT_POSITIONS } from '../actions/robinhood';
 
 export default function robinhood(state = {
   isLoggedIn: false,
   instance: null,
+  currentPositions: []
 }, action) {
   switch (action.type) {
     case LOGIN:
@@ -18,6 +19,11 @@ export default function robinhood(state = {
         isLoggedIn: false,
         error: action.error
       };
+    case SET_CURRENT_POSITIONS:
+      return {
+        ...state,
+        currentPositions: action.positions
+      }
     default:
       return state;
   }

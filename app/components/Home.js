@@ -8,6 +8,8 @@ import trendingUp from '../backend/rh-actions/trending-up';
 import detailedNonZero from '../backend/app-actions/detailed-non-zero';
 import findFirstGreen from '../backend/analysis/find-first-green';
 
+import CurrentPositions from './CurrentPositions';
+
 // const promisifyAll = require('es6-promisify-all');
 // const storage = promisifyAll(require('electron-json-storage'));
 const pmJsonStorage = require('../utils/pm-json-storage');
@@ -41,7 +43,7 @@ export default class Home extends Component {
           <h2>Home</h2>
           <Link to="/plays">to Counter</Link>
           <button onClick={() => this.getFirstGreens()}>get first greens</button>
-          
+          <CurrentPositions positions={this.props.currentPositions} />
         </div>
         <pre>{JSON.stringify(this.state.outputText, null, 2)}</pre>
       </div>

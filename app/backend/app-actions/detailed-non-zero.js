@@ -7,12 +7,13 @@ module.exports = async (Robinhood) => {
   const withTicks = await mapLimit(allPositions, 1, async pos => {
   const instrument = await Robinhood.url(pos.instrument);
   const lookupObj = await lookup(instrument.symbol, Robinhood);
-  return {
-    average_buy_price: Number(pos.average_buy_price),
-    symbol: instrument.symbol,
-    quantity: pos.quantity,
-    ...lookupObj
-  };
+    return {
+      ...lookupObj,
+      ...pos,
+      average_buy_price: Number(pos.average_buy_price),
+      symbol: instrument.symbol,
+      quantity: Number(pos.quantity),
+    };
   });
   console.log('made it', withTicks);
   return withTicks;

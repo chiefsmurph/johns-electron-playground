@@ -1,6 +1,6 @@
 module.exports = {
   credentials: {
-  username: 'chiefsmurph',
-  password: 'applepie3927'
+    username: 'chiefsmurph',
+    password: 'applepie3927'
   }
 };
