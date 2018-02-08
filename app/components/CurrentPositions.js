@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import getTrend from '../backend/utils/get-trend';
 import styles from './CurrentPositions.css';
 
+import TableObj from './TableObj';
+
 export default ({ positions }) => (
 
-  <table width='100%'>
+  <table className={styles.big_table}>
     <thead>
         <tr>
             <th>Symbol</th>
@@ -19,8 +21,10 @@ export default ({ positions }) => (
           <tr key={position.symbol}>
               <td><b>{position.symbol}</b></td>
               <td>
-                bought @: {position.average_buy_price} <br/>
-                current: {position.currentPrice} <br/>
+                <TableObj obj={{
+                  'bought @': position.average_buy_price,
+                  'current': position.currentPrice
+                }} />
               </td>
               <td className={
                 (position.currentPrice > position.average_buy_price) ? 

@@ -63,6 +63,7 @@ export function getCurrentPositions(Robinhood) {
 export function setCurrentPositions(positions) {
   return {
     type: SET_CURRENT_POSITIONS,
-    positions
+    positions,
+    lastFetched: (new Date()).toLocaleString()
   };
 }

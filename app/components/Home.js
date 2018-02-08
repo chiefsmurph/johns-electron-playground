@@ -42,8 +42,10 @@ export default class Home extends Component {
         <div className={styles.container} data-tid="container">
           <h2>Home</h2>
           <Link to="/plays">to Counter</Link>
-          <button onClick={() => this.getFirstGreens()}>get first greens</button>
-          <CurrentPositions positions={this.props.currentPositions} />
+          <button onClick={() => this.getFirstGreens()}>get first greens</button><br/>
+          current positions last fetched: {this.props.lastFetched}
+          <CurrentPositions 
+            positions={this.props.currentPositions} />
         </div>
         <pre>{JSON.stringify(this.state.outputText, null, 2)}</pre>
       </div>

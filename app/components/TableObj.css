@@ -1,0 +1,7 @@
+.table {
+    /* width: 200px; */
+}
+.table td {
+    width: 100px;
+    border: 0;
+}

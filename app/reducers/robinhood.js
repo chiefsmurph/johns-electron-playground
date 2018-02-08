@@ -4,7 +4,8 @@ import { LOGIN, LOGIN_SUCCESS, LOGIN_FAIL, SET_CURRENT_POSITIONS } from '../acti
 export default function robinhood(state = {
   isLoggedIn: false,
   instance: null,
-  currentPositions: []
+  currentPositions: [],
+  lastFetched: null
 }, action) {
   switch (action.type) {
     case LOGIN:
@@ -22,7 +23,8 @@ export default function robinhood(state = {
     case SET_CURRENT_POSITIONS:
       return {
         ...state,
-        currentPositions: action.positions
+        currentPositions: action.positions,
+        lastFetched: action.lastFetched
       }
     default:
       return state;

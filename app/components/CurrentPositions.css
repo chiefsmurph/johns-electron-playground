@@ -1,21 +1,23 @@
-table {
+.big_table {
     width: 100%;
     background-color: rgba(255, 255, 255, 0.4);
-    color: black;
-
-    
+    color: black;    
 }
 
-th {
+.big_table th {
     padding: 10px 0;
 }
 
-td {
+.big_table td {
     padding: 5px 3px;
     border-top: 1px solid black;
 }
 
-td:nth-child(5) {
+.big_table td:nth-child(2) {
+    width: 225px;
+}
+
+.big_table td:nth-child(5) {
     width: 15%;
 }
 

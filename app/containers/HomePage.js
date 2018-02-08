@@ -12,6 +12,7 @@ function mapStateToProps(state) {
     currentPositions: state.robinhood.currentPositions,
     isLoggedIn: state.robinhood.isLoggedIn,
     robinhood: state.robinhood.instance,
+    lastFetched: state.robinhood.lastFetched,
     activePlays: state.plays.active,
     router: state.router
   };
