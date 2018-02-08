@@ -29,6 +29,5 @@
     Not even necessary really. 
     e.g. Height could be left out!
     */
-    width: 40%;
-    height: 50%;
+    min-width: 300px;
 }

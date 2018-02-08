@@ -2,15 +2,23 @@
     width: 100%;
     background-color: rgba(255, 255, 255, 0.4);
     color: black;    
+    border-collapse: collapse;
 }
 
 .big_table th {
     padding: 10px 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: black;
+    border-right: 1px solid black;
 }
 
 .big_table td {
     padding: 5px 3px;
     border-top: 1px solid black;
+}
+
+.big_table > tbody > tr:nth-child(even) {
+    background-color: rgba(200, 200, 100, 0.4);
 }
 
 .big_table td:nth-child(2) {

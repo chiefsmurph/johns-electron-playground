@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import lookup from '../backend/utils/lookup';
 
+import styles from './NewPlayForm.css';
+
 const twoDecs = num => +(num).toFixed(2);
 const INITIAL_STATE = {
   numShares: 1,
@@ -58,7 +60,7 @@ export default class NewPlayForm extends Component {
   render() {
     return (
       <form onSubmit={e => e.preventDefault()}>
-        <table>
+        <table className={styles.table}>
           <tbody>
             <tr>
               <td>Ticker</td>
@@ -94,6 +96,15 @@ export default class NewPlayForm extends Component {
               <td>Total Cost:</td>
               <td>
                 {this.state.totalCost}
+              </td>
+            </tr>
+            <tr>
+              <td>Strategy:</td>
+              <td>
+                <input
+                  type="text"
+                  onInput={(e) => this.setStrategy(e.target.value)}
+                />
               </td>
             </tr>
             <tr>

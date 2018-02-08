@@ -18,6 +18,7 @@ body {
   font-family: Arial, Helvetica, Helvetica Neue, serif;
   /* overflow-y: hidden; */
   background-attachment: fixed;
+  padding-bottom: 10px;
 }
 
 h2 {
