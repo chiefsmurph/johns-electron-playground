@@ -48,7 +48,7 @@ export default class Home extends Component {
     return (
       <div>
         <div className={styles.container} data-tid="container">
-          <h2>Home</h2>
+          <h2>ROBINHACKER</h2>
           <Link to="/plays">to Counter</Link>
           <button onClick={() => this.toggleModal()}>Toggle</button><br/>
           <button onClick={() => this.getFirstGreens()}>get first greens</button><br/>
@@ -66,7 +66,7 @@ export default class Home extends Component {
               robinhood={this.props.robinhood} 
               onNewPlay={this.props.playActions.registerPlay} 
             />
-            
+
           </Modal>
         )}
       </div>
