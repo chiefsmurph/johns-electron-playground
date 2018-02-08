@@ -21,6 +21,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     robinhoodActions: bindActionCreators(RobinhoodActions, dispatch),
+    playActions: bindActionCreators(PlayActions, dispatch)
   };
 }
 

@@ -11,7 +11,6 @@ export function registerPlay(payload) {
   return async (dispatch, getState) => {
     dispatch(newPlay(payload));
     await pmJsonStorage.set('plays', getState().plays);
-    console.log('playssaved', getState().plays);
     console.log(await pmJsonStorage.getAll());
   };
 }

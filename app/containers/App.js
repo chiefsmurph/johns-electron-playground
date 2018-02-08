@@ -29,7 +29,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(class App extends Re
   render() {
     return (
       <div>
-        <pre>{JSON.stringify(this.props.router, null, 2)}</pre>
         {this.props.children}
       </div>
     );

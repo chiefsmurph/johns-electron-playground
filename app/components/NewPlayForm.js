@@ -63,7 +63,7 @@ export default class NewPlayForm extends Component {
             <tr>
               <td>Ticker</td>
               <td>
-                <input type="text" onInput={(e) => this.getPrice(e.target.value)} />
+                <input type="text" onInput={(e) => this.getPrice(e.target.value)} autofocus />
               </td>
             </tr>
             <tr>
@@ -118,7 +118,7 @@ export default class NewPlayForm extends Component {
             </tr>
           </tbody>
         </table>
-        <button onClick={() => this.submit()} data-tclass="btn">submit</button>
+        <button onClick={() => this.submit()} data-tclass="btn">Submit</button>
       </form>
     );
   }
