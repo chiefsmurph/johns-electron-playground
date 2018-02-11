@@ -16,17 +16,17 @@ module.exports = async (Robinhood) => {
 
   let {equity_historicals: hist} = await Robinhood.url('https://api.robinhood.com/portfolios/historicals/5SA80442/?span=year&interval=day');
   hist = hist.map(h => ({
-  ...h,
-  date: (() => {
-    const d = new Date(h.begins_at);
-    d.setDate(d.getDate() + 1);
-    return d.toLocaleDateString();
-  })(),
-  close: Number(h.adjusted_close_equity)
+    ...h,
+    date: (() => {
+      const d = new Date(h.begins_at);
+      d.setDate(d.getDate() + 1);
+      return d.toLocaleDateString();
+    })(),
+    close: Number(h.adjusted_close_equity)
   }));
 
   hist.forEach(h => {
-  portfolioCache[h.date] = h.close;
+    portfolioCache[h.date] = h.close;
   });
 
   // log it
@@ -37,7 +37,7 @@ module.exports = async (Robinhood) => {
   // portfolioCache[dateStr] = totalPortfolioValue;
 
   try {
-  await fs.writeFile('./portfolio-cache.json', JSON.stringify(portfolioCache, null, 2));
+    await fs.writeFile('./portfolio-cache.json', JSON.stringify(portfolioCache, null, 2));
   } catch (e) {}
 
 };

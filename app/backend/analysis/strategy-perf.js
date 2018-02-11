@@ -21,59 +21,59 @@ const calcStratPerf = date => {
   const stratPerf = {};
   sells.forEach(sell => {
 
-  const buys = prevDayTransactions.filter(buy => {
-    return buy.type === 'buy' && buy.ticker === sell.ticker && buy.strategy;
-  });
+    const buys = prevDayTransactions.filter(buy => {
+      return buy.type === 'buy' && buy.ticker === sell.ticker && buy.strategy;
+    });
 
-  if (sell.ticker === 'RLGT') {
-    console.log('rlgt', buys);
-  }
+    if (sell.ticker === 'RLGT') {
+      console.log('rlgt', buys);
+    }
 
-  buys.forEach(buy => {
-    const foundStrategy = buy.strategy;
-    const trend = getTrend(sell.bid_price, buy.bid_price);
-    const obj = {
-    buyPrice: buy.bid_price,
-    sellPrice: sell.bid_price,
-    trend,
-    ticker: buy.ticker
-    };
-    stratPerf[foundStrategy] = (stratPerf[foundStrategy] || []).concat(obj);
-  });
+    buys.forEach(buy => {
+      const foundStrategy = buy.strategy;
+      const trend = getTrend(sell.bid_price, buy.bid_price);
+      const obj = {
+        buyPrice: buy.bid_price,
+        sellPrice: sell.bid_price,
+        trend,
+        ticker: buy.ticker
+      };
+      stratPerf[foundStrategy] = (stratPerf[foundStrategy] || []).concat(obj);
+    });
 
-  // console.log(t.ticker, 'found matches', prevMatches);
+    // console.log(t.ticker, 'found matches', prevMatches);
 
   });
 
   console.log(date, '.....')
   Object.keys(stratPerf).forEach(strategy => {
-  stratPerf[strategy] = {
-    avgTrend: avgArray(stratPerf[strategy].map(t => t.trend)),
-    // transactions: stratPerf[strategy]
-  };
-  console.log(strategy, stratPerf[strategy]);
+    stratPerf[strategy] = {
+      avgTrend: avgArray(stratPerf[strategy].map(t => t.trend)),
+      // transactions: stratPerf[strategy]
+    };
+    console.log(strategy, stratPerf[strategy]);
   });
   console.log('-----------------');
 
-  };
+};
 
-  (async () => {
+(async () => {
 
   let files = await fs.readdir('./daily-transactions');
   files = files.map(file => file.split('.')[0]);
 
   sortedFiles = files.sort((a, b) => {
-  return new Date(a) - new Date(b);
+    return new Date(a) - new Date(b);
   });
 
   console.log(sortedFiles);
   const allTransactions = await mapLimit(sortedFiles, 1, async file => {
-  return JSON.parse(await fs.readFile('./daily-transactions/' + file + '.json', 'utf8'));
+    return JSON.parse(await fs.readFile('./daily-transactions/' + file + '.json', 'utf8'));
   });
 
   allTransObj = allTransactions.reduce((acc, val, ind) => {
-  acc[sortedFiles[ind]] = val;
-  return acc;
+    acc[sortedFiles[ind]] = val;
+    return acc;
   }, {});
 
   // console.log(JSON.stringify(allTransObj, null, 2));

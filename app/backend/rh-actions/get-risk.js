@@ -9,35 +9,35 @@ const shouldWatchout = async (Robinhood, ticker) => {
   let { historicals: dailyYear} = await Robinhood.url(historicalDailyUrl);
 
   if (!dailyYear.length) {
-  return { shouldWatchout: true };
+    return { shouldWatchout: true };
   }
 
   let maxClose = 0;
   const overnightJumps = [];
   dailyYear = dailyYear
-  .map((historical, ind) => {
-    const prevDay = dailyYear[ind - 1] || {};
-    const trend = getTrend(historical.close_price, prevDay.close_price);
-    if (trend < -3) {
-    const jumpOvernight = Number(prevDay.close_price) - Number(historical.open_price);
-    jumpOvernight && overnightJumps.push(jumpOvernight);
-    }
-    if (Number(historical.close_price) > maxClose) maxClose = Number(historical.close_price);
-    return {
-    ...historical,
-    trend
-    };
-  });
+    .map((historical, ind) => {
+      const prevDay = dailyYear[ind - 1] || {};
+      const trend = getTrend(historical.close_price, prevDay.close_price);
+      if (trend < -3) {
+        const jumpOvernight = Number(prevDay.close_price) - Number(historical.open_price);
+        jumpOvernight && overnightJumps.push(jumpOvernight);
+      }
+      if (Number(historical.close_price) > maxClose) maxClose = Number(historical.close_price);
+      return {
+        ...historical,
+        trend
+      };
+    });
 
   const shouldWatchout = (
-  dailyYear.slice(-90).some(historical => historical.trend > 25) ||
-  dailyYear.some(historical => historical.trend < -15)
+    dailyYear.slice(-90).some(historical => historical.trend > 25) ||
+    dailyYear.some(historical => historical.trend < -15)
   );
 
   return {
-  shouldWatchout,
-  avgJumpAfterDrop: +(avgArray(overnightJumps).toFixed(2)),
-  percMax: getTrend(dailyYear[dailyYear.length - 1].close_price, maxClose)
+    shouldWatchout,
+    avgJumpAfterDrop: +(avgArray(overnightJumps).toFixed(2)),
+    percMax: getTrend(dailyYear[dailyYear.length - 1].close_price, maxClose)
   };
   // console.log(JSON.stringify(dailyYear, null, 2));
 };

@@ -5,14 +5,14 @@ const recursiveUrl = async (Robinhood, callUrl) => {
 
   let reqBody = {};
   do {
-  console.log('looking at', allResults.length, 'results');
-  try {
-    reqBody = await Robinhood.url(reqBody.next || callUrl);
-  } catch (e) {
-    console.log('caught this error', e);
-  }
+    console.log('looking at', allResults.length, 'results');
+    try {
+      reqBody = await Robinhood.url(reqBody.next || callUrl);
+    } catch (e) {
+      console.log('caught this error', e);
+    }
 
-  allResults = allResults.concat(reqBody.results);
+    allResults = allResults.concat(reqBody.results);
   } while (reqBody.next);
 
   return allResults;

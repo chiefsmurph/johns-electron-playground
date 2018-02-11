@@ -28,7 +28,7 @@ const getHistorical = async ticker => {
 
 
   let cheapBuys = trend.filter(stock => {
-  return Number(stock.quote_data.last_trade_price) > 5 && Number(stock.quote_data.last_trade_price) < 15;
+    return Number(stock.quote_data.last_trade_price) > 5 && Number(stock.quote_data.last_trade_price) < 15;
   });
 
   // var allTickers = require('../stock-data/allStocks');
@@ -39,8 +39,8 @@ const getHistorical = async ticker => {
 
   console.log('getting historicals')
   cheapBuys = await mapLimit(cheapBuys, 20, async buy => ({
-  ...buy,
-  historicals: await getHistorical(buy.ticker)
+    ...buy,
+    historicals: await getHistorical(buy.ticker)
   }));
 
 
@@ -49,73 +49,73 @@ const getHistorical = async ticker => {
   const days = Array.from(Array(7).keys());
   for (let i of days) {
 
-  console.log('getting streak historicals for ', i);
-  let dayName;
+    console.log('getting streak historicals for ', i);
+    let dayName;
 
-  let innerBuys = cheapBuys;
-  innerBuys = innerBuys.filter(buy => buy.historicals);
+    let innerBuys = cheapBuys;
+    innerBuys = innerBuys.filter(buy => buy.historicals);
 
-  innerBuys = innerBuys.map(buy => {
-    const historicals = (buy.historicals.slice(0, buy.historicals.length - i) || []);
-    const mostRecentDay = buy.historicals.pop();
-    if (!dayName) {
-    dayName = mostRecentDay.begins_at;
-    // console.log('most recent', mostRecentDay)
-    }
-    const recentTrend = getTrend(
-    mostRecentDay.close_price,
-    mostRecentDay.open_price,
-    );
-    return {
-    ticker: buy.ticker,
-    historicals,
-    recentTrend,
-    mostRecentDay
+    innerBuys = innerBuys.map(buy => {
+      const historicals = (buy.historicals.slice(0, buy.historicals.length - i) || []);
+      const mostRecentDay = buy.historicals.pop();
+      if (!dayName) {
+        dayName = mostRecentDay.begins_at;
+        // console.log('most recent', mostRecentDay)
+      }
+      const recentTrend = getTrend(
+        mostRecentDay.close_price,
+        mostRecentDay.open_price,
+      );
+      return {
+        ticker: buy.ticker,
+        historicals,
+        recentTrend,
+        mostRecentDay
+      };
+    });
+
+    innerBuys = await mapLimit(innerBuys, 20, async buy => ({
+      ...buy,
+      upstreak: await getUpStreak(Robinhood, buy.ticker, buy.historicals)
+    }));
+
+    innerBuys = innerBuys.map(buy => {
+      delete buy.historicals;
+      return buy;
+    });
+
+    const results = {};
+
+    const breakdown = (n, matches) => {
+
+      // const jumpedUp = matches.filter(b => b.overnightJump > 1);
+
+      results[n] = {
+        count: matches.length,
+        percUp: matches.filter(b => Number(b.recentTrend) > 0).length / matches.length,
+        avgToday: avgArray(matches.map(m => Number(m.recentTrend))),
+        // tickers: matches.map(m => m.ticker)
+        // jumpedUp: {
+        //   count: jumpedUp.length,
+        //   percUp: jumpedUp.filter(b => Number(b.trend_since_open) > 0).length / jumpedUp.length,
+        //   avgToday: avgArray(jumpedUp.map(m => Number(m.trend_since_open)))
+        // }
+      };
     };
-  });
 
-  innerBuys = await mapLimit(innerBuys, 20, async buy => ({
-    ...buy,
-    upstreak: await getUpStreak(Robinhood, buy.ticker, buy.historicals)
-  }));
+    [2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(n => {
 
-  innerBuys = innerBuys.map(buy => {
-    delete buy.historicals;
-    return buy;
-  });
+      const matches = innerBuys.filter(b => b.upstreak === n);
+      breakdown(n, matches);
 
-  const results = {};
+    });
 
-  const breakdown = (n, matches) => {
+    breakdown('>10', innerBuys.filter(b => b.upstreak > 10));
 
-    // const jumpedUp = matches.filter(b => b.overnightJump > 1);
-
-    results[n] = {
-    count: matches.length,
-    percUp: matches.filter(b => Number(b.recentTrend) > 0).length / matches.length,
-    avgToday: avgArray(matches.map(m => Number(m.recentTrend))),
-    // tickers: matches.map(m => m.ticker)
-    // jumpedUp: {
-    //   count: jumpedUp.length,
-    //   percUp: jumpedUp.filter(b => Number(b.trend_since_open) > 0).length / jumpedUp.length,
-    //   avgToday: avgArray(jumpedUp.map(m => Number(m.trend_since_open)))
-    // }
-    };
-  };
-
-  [2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(n => {
-
-    const matches = innerBuys.filter(b => b.upstreak === n);
-    breakdown(n, matches);
-
-  });
-
-  breakdown('>10', innerBuys.filter(b => b.upstreak > 10));
-
-  allResults.push({
-    day: dayName,
-    ...results
-  });
+    allResults.push({
+      day: dayName,
+      ...results
+    });
 
   }
 
@@ -123,25 +123,25 @@ const getHistorical = async ticker => {
   // aggregate allResults
 
   let aggResults = allResults.reduce((acc, val) => {
-  Object.keys(val).forEach(key => {
-    acc[key] = (acc[key] || []).concat(val[key]);
-  });
-  return acc;
+    Object.keys(val).forEach(key => {
+      acc[key] = (acc[key] || []).concat(val[key]);
+    });
+    return acc;
   }, {});
 
   console.log(JSON.stringify(aggResults, null, 2));
 
   aggResults = Object.keys(aggResults).reduce((acc, key) => {
-  if (key === 'day') return acc;
-  acc[key] = Object.keys(aggResults[key][0]).reduce((innerAcc, innerKey) => {
-    const allInnerKeyVals = aggResults[key]
-    .map(val => val[innerKey])
-    .filter(val => !!val);
-    // console.log('all', innerKey, allInnerKeyVals);
-    innerAcc[innerKey] = avgArray(allInnerKeyVals);
-    return innerAcc;
-  }, {});
-  return acc;
+    if (key === 'day') return acc;
+    acc[key] = Object.keys(aggResults[key][0]).reduce((innerAcc, innerKey) => {
+      const allInnerKeyVals = aggResults[key]
+      .map(val => val[innerKey])
+      .filter(val => !!val);
+      // console.log('all', innerKey, allInnerKeyVals);
+      innerAcc[innerKey] = avgArray(allInnerKeyVals);
+      return innerAcc;
+    }, {});
+    return acc;
   }, {});
 
 

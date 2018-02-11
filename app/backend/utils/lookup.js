@@ -27,7 +27,7 @@ module.exports = async (ticker, Robinhood) => {
     data = {
       ...data,
       yahooPrice,
-      currentPrice: yahooPrice || data.lastTrade
+      currentPrice: data.lastTrade || yahooPrice
     };
     return data;
   } catch (e) {

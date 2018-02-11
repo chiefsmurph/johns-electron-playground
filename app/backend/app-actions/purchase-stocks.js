@@ -5,9 +5,9 @@ const purchaseStocks = async (Robinhood, { stocksToBuy, ratioToSpend, strategy }
   const totalAmtToSpend = Number(accounts.results[0].sma) * ratioToSpend;
   console.log('totalAmtToSpend', totalAmtToSpend);
   await limitBuyMultiple(Robinhood, {
-  stocksToBuy,
-  totalAmtToSpend,
-  strategy
+    stocksToBuy,
+    totalAmtToSpend,
+    strategy
   });
 };
 
