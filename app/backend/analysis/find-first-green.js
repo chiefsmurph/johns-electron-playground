@@ -57,7 +57,7 @@ module.exports = async Robinhood => {
         mostRecentTrend
       };
     })
-    .filter(({mostRecentTrend}) => mostRecentTrend > 1)
+    .filter(({mostRecentTrend}) => mostRecentTrend > 1 && mostRecentTrend < 6)
     .map(buy => {
       let daysDown = [];
       buy.historicals.some(hist => {
