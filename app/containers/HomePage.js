@@ -3,12 +3,12 @@ import Home from '../components/Home';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Plays from '../components/Plays';
 import * as PlayActions from '../actions/plays';
 import * as RobinhoodActions from '../actions/robinhood';
 
 function mapStateToProps(state) {
   return {
+    gettingPositions: state.robinhood.gettingPositions,
     currentPositions: state.robinhood.currentPositions,
     isLoggedIn: state.robinhood.isLoggedIn,
     robinhood: state.robinhood.instance,

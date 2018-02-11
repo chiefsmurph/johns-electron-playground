@@ -8,6 +8,7 @@ export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const SET_CURRENT_POSITIONS = 'SET_CURRENT_POSITIONS';
+export const SET_GETTING_POSITIONS = 'SET_GETTING_POSITIONS';
 
 export function login(credentials) {
   return {
@@ -38,6 +39,9 @@ export function loginRh() {
       const Robinhood = await rhLogin();
       dispatch(loginSucess(Robinhood));
       dispatch(getCurrentPositions(Robinhood));
+      let {results: orders} = await Robinhood.orders();
+      orders = orders.filter(order => !['filled', 'cancelled'].includes(order.state));
+      console.log(orders, 'ORDERS')
       resolve();
 
     });
@@ -45,8 +49,16 @@ export function loginRh() {
   }
 };
 
+export function setGettingPositions(gettingPositions) {
+  return {
+    type: SET_GETTING_POSITIONS,
+    gettingPositions
+  };
+}
+
 export function getCurrentPositions(Robinhood) {
   return async (dispatch, getState) => {
+    dispatch(setGettingPositions(true));
     let rh = Robinhood || getState().robinhood.instance;
     let nonZero = await getDetailedNonZero(rh);
     nonZero = nonZero
@@ -57,6 +69,7 @@ export function getCurrentPositions(Robinhood) {
       .sort((a, b) => b.overallValue - a.overallValue);
     console.log(nonZero);
     dispatch(setCurrentPositions(nonZero));
+    dispatch(setGettingPositions(false));
   }
 }
 

@@ -42,10 +42,10 @@ module.exports = async (Robinhood, { ticker, strategy, maxPrice }) => {
     await limitBuyLastTrade(
       Robinhood,
       {
-      ticker,
-      bidPrice,
-      quantity,
-      strategy
+        ticker,
+        bidPrice,
+        quantity,
+        strategy
       }
     );
 
@@ -53,44 +53,46 @@ module.exports = async (Robinhood, { ticker, strategy, maxPrice }) => {
 
       // get orders, check if still pending
       let {results: orders} = await Robinhood.orders();
-      orders = orders.filter(order => ['filled', 'cancelled'].indexOf(order.state) === -1);
+      orders = orders.filter(order => !['filled', 'cancelled'].includes(order.state));
 
       orders = await mapLimit(orders, 1, async order => ({
-      ...order,
-      instrument: await Robinhood.url(order.instrument)
+        ...order,
+        instrument: await Robinhood.url(order.instrument)
       }));
 
+      console.log('ORDERRRS', orders);
+
       const relOrder = orders.find(order => {
-      return order.instrument.symbol === ticker;
+        return order.instrument.symbol === ticker;
       });
-      // console.log(relOrder);
+      console.log('related order', relOrder, orders);
       if (relOrder) {
-      console.log('canceling last attempt', ticker);
-      await Robinhood.cancel_order(relOrder);
-      curBuyRatio += BUY_RATIO_INCREMENT;
-      if (curBuyRatio < MAX_BUY_RATIO) {
-        return attempt();
+        console.log('canceling last attempt', ticker);
+        await Robinhood.cancel_order(relOrder);
+        curBuyRatio += BUY_RATIO_INCREMENT;
+        if (curBuyRatio < MAX_BUY_RATIO) {
+          return attempt();
+        } else {
+          console.log('reached MAX_BUY_RATIO, unable to BUY', ticker);
+        }
       } else {
-        console.log('reached MAX_BUY_RATIO, unable to BUY', ticker);
+
+        // update daily transactions
+
+        // await addToDailyTransactions({
+        //   type: 'buy',
+        //   ticker,
+        //   bid_price: bidPrice,
+        //   quantity,
+        //   strategy
+        // });
+
+        if (attemptCount) {
+          console.log('successfully bought with attemptcount', attemptCount, ticker);
+        }
+
       }
-      } else {
-
-      // update daily transactions
-
-      await addToDailyTransactions({
-        type: 'buy',
-        ticker,
-        bid_price: bidPrice,
-        quantity,
-        strategy
-      });
-
-      if (attemptCount) {
-        console.log('successfully bought with attemptcount', attemptCount, ticker);
-      }
-
-    }
-  }, TIME_BETWEEN_CHECK * 1000);
+    }, TIME_BETWEEN_CHECK * 1000);
 
   };
 

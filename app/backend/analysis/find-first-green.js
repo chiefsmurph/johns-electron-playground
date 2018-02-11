@@ -7,12 +7,6 @@ const mapLimit = require('promise-map-limit');
 
 module.exports = async Robinhood => {
 
-  const getHistorical = async ticker => {
-    const historicalDailyUrl = `https://api.robinhood.com/quotes/historicals/${ticker}/?interval=day`;
-    let { historicals } = await Robinhood.url(historicalDailyUrl);
-    return (historicals.length) ? historicals : [];
-  };
-
   // let trend = require('/Users/johnmurphy/Development/my-stuff/robinhood-playground/stock-data/2018-2-5 07:24:06 (+50).json');
   let trend = await getTrendAndSave(Robinhood);
 
@@ -63,7 +57,7 @@ module.exports = async Robinhood => {
         mostRecentTrend
       };
     })
-    .filter(({mostRecentTrend}) => mostRecentTrend > 1 && mostRecentTrend < 6)
+    .filter(({mostRecentTrend}) => mostRecentTrend > 1)
     .map(buy => {
       let daysDown = [];
       buy.historicals.some(hist => {

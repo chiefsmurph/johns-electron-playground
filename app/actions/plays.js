@@ -1,5 +1,6 @@
 // @flow
 import detailedNonZero from '../backend/app-actions/detailed-non-zero';
+import activeBuy from '../backend/app-actions/active-buy';
 import pmJsonStorage from '../utils/pm-json-storage';
 
 export const NEW_PLAY = 'NEW_PLAY';
@@ -10,6 +11,14 @@ export const INIT_PLAYS = 'INIT_PLAYS';
 export function registerPlay(payload) {
   return async (dispatch, getState) => {
     dispatch(newPlay(payload));
+    const rh = getState().robinhood.instance;
+    const { ticker, strategy, numShares, buyPrice } = payload;
+    const maxPrice = numShares * buyPrice;
+    await activeBuy(rh, {
+      ticker,
+      strategy,
+      maxPrice
+    });
     await pmJsonStorage.set('plays', getState().plays);
     console.log(await pmJsonStorage.getAll());
   };

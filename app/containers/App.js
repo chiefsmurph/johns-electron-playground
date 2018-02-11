@@ -29,6 +29,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(class App extends Re
   render() {
     return (
       <div>
+        <h2>ROBINHACKER</h2>
         {this.props.children}
       </div>
     );

@@ -4,7 +4,7 @@ import styles from './CurrentPositions.css';
 
 import TableObj from './TableObj';
 
-export default ({ positions }) => (
+export default ({ positions, onActiveSell }) => (
 
   <table className={styles.big_table}>
     <thead>
@@ -19,7 +19,10 @@ export default ({ positions }) => (
     <tbody>
       {positions && positions.map(position => (
           <tr key={position.symbol}>
-              <td><b>{position.symbol}</b></td>
+              <td>
+                <b>{position.symbol}</b><br />
+                <a onClick={() => onActiveSell(position.symbol, position.quantity)}><small>active sell</small></a>
+              </td>
               <td>
                 <TableObj obj={{
                   'bought @': position.average_buy_price,

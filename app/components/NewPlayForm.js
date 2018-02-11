@@ -11,7 +11,8 @@ const INITIAL_STATE = {
   lowSell: '',
   foundPrice: '',
   totalCost: '',
-  ticker: ''
+  ticker: '',
+  strategy: ''
 };
 export default class NewPlayForm extends Component {
   constructor(props) {
@@ -53,7 +54,8 @@ export default class NewPlayForm extends Component {
       buyPrice: this.state.buyPrice,
       highSell: this.state.highSell,
       lowSell: this.state.lowSell,
-      numShares: this.state.numShares
+      numShares: this.state.numShares,
+      strategy: this.state.strategy
     });
     this.setState(INITIAL_STATE);
   }
@@ -65,7 +67,7 @@ export default class NewPlayForm extends Component {
             <tr>
               <td>Ticker</td>
               <td>
-                <input type="text" onInput={(e) => this.getPrice(e.target.value)} autofocus />
+                <input type="text" onInput={(e) => this.getPrice(e.target.value)} autoFocus />
               </td>
             </tr>
             <tr>
@@ -103,11 +105,11 @@ export default class NewPlayForm extends Component {
               <td>
                 <input
                   type="text"
-                  onInput={(e) => this.setStrategy(e.target.value)}
+                  onInput={(e) => this.setState({strategy: e.target.value})}
                 />
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>High Sell:</td>
               <td>
                 <input
@@ -126,7 +128,7 @@ export default class NewPlayForm extends Component {
                   onInput={(e) => this.setLowSell(e.target.value)}
                 />
               </td>
-            </tr>
+            </tr> */}
           </tbody>
         </table>
         <button onClick={() => this.submit()} data-tclass="btn">Submit</button>

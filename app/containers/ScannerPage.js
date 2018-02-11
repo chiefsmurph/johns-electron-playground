@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Plays from '../components/Plays';
+import Scanner from '../components/Scanner';
 import * as PlayActions from '../actions/plays';
 import * as RobinhoodActions from '../actions/robinhood';
 
@@ -19,4 +19,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Plays);
+export default connect(mapStateToProps, mapDispatchToProps)(Scanner);
