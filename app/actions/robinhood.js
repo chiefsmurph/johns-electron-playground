@@ -1,5 +1,11 @@
 import rhLogin from '../backend/rh-actions/login';
 import getDetailedNonZero from '../backend/app-actions/detailed-non-zero';
+import initModules from '../backend/app-actions/init-modules';
+
+const regCronIncAfterSixThirty = require('../backend/utils/reg-cron-after-630');
+
+const { app } = require('electron').remote;
+const fs = require('mz/fs');
 
 const twoDecs = num => +(num).toFixed(2);
 
@@ -38,8 +44,9 @@ export function loginRh() {
       console.log('ROBINHOOD')
       const Robinhood = await rhLogin();
       dispatch(loginSucess(Robinhood));
+      dispatch(initBackground(Robinhood));
       dispatch(getCurrentPositions(Robinhood));
-      let {results: orders} = await Robinhood.orders();
+      let { results: orders } = await Robinhood.orders();
       orders = orders.filter(order => !['filled', 'cancelled'].includes(order.state));
       console.log(orders, 'ORDERS')
       resolve();
@@ -78,5 +85,16 @@ export function setCurrentPositions(positions) {
     type: SET_CURRENT_POSITIONS,
     positions,
     lastFetched: (new Date()).toLocaleString()
+  };
+}
+
+export function initBackground(Robinhood) {
+  return async (dispatch) => {
+    // const remote = require('electron').remote;
+    // const appPath = process.env.NODE_ENV === 'production' ? remote.app.getAppPath() : __dirname
+    // console.log('appPath', appPath, 'prod', process.env.NODE_ENV === 'production');
+    // await fs.writeFile(appPath + '/turkey.txt', 'cripsy');
+    await initModules(Robinhood);
+    regCronIncAfterSixThirty.display();
   };
 }

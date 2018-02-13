@@ -1,4 +1,4 @@
-const { CronJob } = require('cron');
+const { CronJob } = require('electron').remote.require('cron');
 
 let allCrons = [];
 
@@ -15,11 +15,19 @@ const regCronIncAfterSixThirty = (Robinhood, { name, run, fn }) => {
       cronStr,
       name
     });
-    // console.log('push all', allCrons);
-    new CronJob(cronStr, () => {
+
+    // const msDiff = newDateObj.getTime() - (new Date()).getTime();
+    // console.log(msDiff, 'ms');
+    // if (msDiff > 0) {
+    //   setTimeout(() => fn(Robinhood, min, index), msDiff);
+    // }
+
+
+    const theCron = new CronJob(cronStr, () => {
       console.log('starting cron: ', name);
       fn(Robinhood, min, index);
     }, null, true);
+    console.log('push all', allCrons, theCron);
   });
 };
 

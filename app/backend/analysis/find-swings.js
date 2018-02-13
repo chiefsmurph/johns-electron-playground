@@ -108,11 +108,11 @@ module.exports = async Robinhood => {
       const title = `buffer: ${bufferSize} | days: ${days}`;
       const points = diffRatio * numSwings * (35 - bufferSize);
       stockResults[ticker] = (stockResults[ticker] || []).concat({
-      diffRatio,
-      numSwings,
-      daysInLow,
-      swingTitle: title,
-      points
+        diffRatio,
+        numSwings,
+        daysInLow,
+        swingTitle: title,
+        points
       });
     });
   };

@@ -1,7 +1,7 @@
 const fs = require('mz/fs');
 const recursiveUrl = require('./recursive-url');
 
-const pmJsonStorage = require('../../utils/pm-json-storage');
+const pmJsonStorage = require('../utils/json-mgr');
 
 const saveJSON = async (fileName, obj) => {
   await fs.writeFile(fileName, JSON.stringify(obj, null, 2));

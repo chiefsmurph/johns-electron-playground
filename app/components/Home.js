@@ -44,25 +44,25 @@ export default class Home extends Component {
         <div className={styles.container} data-tid="container">
           <Link to="/scanner">to Scanner</Link>
           <button onClick={() => this.toggleModal()}>New Play</button><br/>
-          current positions last fetched: {this.props.lastFetched}
+          last fetched: {this.props.lastFetched}
           {this.props.gettingPositions ? (
             <i>getting positions{this.props.gettingPositions}</i>
           ) : (
             <a onClick={() => this.props.robinhoodActions.getCurrentPositions()}>refresh positions{this.props.gettingPositions}</a>
           )}
-          <CurrentPositions 
+          <CurrentPositions
             positions={this.props.currentPositions}
             onActiveSell={this.onActiveSell} />
         </div>
         <pre>{JSON.stringify(this.state.outputText, null, 2)}</pre>
         {this.state.showingModal && (
-          <Modal 
+          <Modal
             title='New Play'
             onCancel={() => this.setState({ showingModal: false })}>
 
             <NewPlayForm
-              robinhood={this.props.robinhood} 
-              onNewPlay={this.props.playActions.registerPlay} 
+              robinhood={this.props.robinhood}
+              onNewPlay={this.props.playActions.registerPlay}
             />
 
           </Modal>

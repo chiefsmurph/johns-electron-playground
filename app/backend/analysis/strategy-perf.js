@@ -2,6 +2,7 @@ const fs = require('mz/fs');
 const mapLimit = require('promise-map-limit');
 const getTrend = require('../utils/get-trend');
 const avgArray = require('../utils/avg-array');
+const jsonMgr = require('../utils/json-mgr');
 
 let sortedFiles, allTransObj;
 
@@ -68,7 +69,7 @@ const calcStratPerf = date => {
 
   console.log(sortedFiles);
   const allTransactions = await mapLimit(sortedFiles, 1, async file => {
-    return JSON.parse(await fs.readFile('./daily-transactions/' + file + '.json', 'utf8'));
+    return JSON.parse(await jsonMgr.get('./daily-transactions/' + file + '.json'));
   });
 
   allTransObj = allTransactions.reduce((acc, val, ind) => {
